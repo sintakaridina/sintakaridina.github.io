@@ -731,10 +731,47 @@
             position: relative;
         }
 
+        .carousel-wrapper {
+            position: relative;
+        }
+
         .tech-carousel {
             display: flex;
             gap: 2rem;
             animation: scroll 20s linear infinite;
+            transition: transform 0.3s ease;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 102, 204, 0.8);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .carousel-nav:hover {
+            background: var(--primary-blue);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-nav.prev {
+            left: -20px;
+        }
+
+        .carousel-nav.next {
+            right: -20px;
         }
 
         .tech-item {
@@ -773,6 +810,12 @@
             }
             100% {
                 transform: translateX(-50%);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tech-carousel {
+                animation: scroll 12s linear infinite;
             }
         }
 
@@ -1199,9 +1242,15 @@
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
             .project-header { flex-direction: column; gap: 1rem; }
-            .architecture-diagram { height: 250px; }
-            .arch-component { min-width: 80px; padding: 0.5rem; }
-            .arch-component .component-name { font-size: 0.8rem; }
+            .architecture-diagram { height: 180px; }
+            .arch-component { 
+                min-width: 50px; 
+                padding: 0.3rem;
+                font-size: 0.7rem;
+            }
+            .arch-component .component-name { font-size: 0.6rem; }
+            .arch-component .component-detail { font-size: 0.5rem; }
+            .arch-component .component-icon { font-size: 1.2rem; }
             .about-content { grid-template-columns: 1fr; gap: 2rem; }
             .about-stats { grid-template-columns: 1fr; }
             .experience-timeline::before { left: 20px; }
@@ -1211,6 +1260,23 @@
             .timeline-content { margin: 0; margin-left: 3rem; }
             .contact-content { grid-template-columns: 1fr; gap: 2rem; }
             .footer-content { flex-direction: column; gap: 1rem; }
+            .carousel-nav { display: none; }
+        }
+
+        @media (max-width: 480px) {
+            .architecture-diagram {
+                height: 140px;
+            }
+            .arch-component {
+                min-width: 40px;
+                padding: 0.2rem;
+            }
+            .arch-component .component-name { font-size: 0.5rem; }
+            .arch-component .component-detail { font-size: 0.4rem; }
+            .arch-component .component-icon { font-size: 1rem; }
+            .project-container {
+                margin-bottom: 2rem;
+            }
         }
     </style>
 </head>
@@ -1248,7 +1314,8 @@
                     <div class="profile-photo">
                         <img src="profile.png" alt="Sinta Karidina - Backend Software Engineer">
                     </div>
-                </div>
+                 </div>
+             </div>
             </div>
         </section>
 
@@ -1300,6 +1367,7 @@
                                 <i class="fab fa-github"></i>
                             </a>
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>
@@ -1390,7 +1458,14 @@
                 <p>Technologies I work with to build amazing backend systems</p>
             </div>
             <div class="tech-carousel-container">
-                <div class="tech-carousel">
+                <div class="carousel-wrapper">
+                    <button class="carousel-nav prev" onclick="prevSlide()">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
+                    <button class="carousel-nav next" onclick="nextSlide()">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                    <div class="tech-carousel">
                     <!-- Programming Languages -->
                     <div class="tech-item">
                         <div class="tech-icon">
@@ -2324,10 +2399,12 @@
         
         // Tech Stack Carousel
         let currentSlide = 0;
+        let autoSlideInterval;
         const techCarousel = document.querySelector('.tech-carousel');
         const techItems = document.querySelectorAll('.tech-item');
         const itemsPerSlide = 4;
         const totalSlides = Math.ceil(techItems.length / itemsPerSlide);
+        let isManualControl = false;
 
         function showSlide(slideIndex) {
             if (techCarousel) {
@@ -2339,16 +2416,77 @@
         function nextSlide() {
             currentSlide = (currentSlide + 1) % totalSlides;
             showSlide(currentSlide);
+            if (isManualControl) {
+                resetAutoSlide();
+            }
         }
 
         function prevSlide() {
             currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
             showSlide(currentSlide);
+            if (isManualControl) {
+                resetAutoSlide();
+            }
         }
 
-        // Auto-rotate carousel every 4 seconds
+        function startAutoSlide() {
+             if (techCarousel) {
+                 const isMobile = window.innerWidth <= 768;
+                 const interval = isMobile ? 2500 : 4000;
+                 autoSlideInterval = setInterval(() => {
+                     if (!isManualControl) {
+                         nextSlide();
+                     }
+                 }, interval);
+             }
+         }
+
+        function resetAutoSlide() {
+            clearInterval(autoSlideInterval);
+            isManualControl = true;
+            setTimeout(() => {
+                isManualControl = false;
+                startAutoSlide();
+            }, 8000); // Resume auto-slide after 8 seconds
+        }
+
+        // Initialize auto-slide
+        startAutoSlide();
+
+        // Add manual control event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            const prevBtn = document.querySelector('.carousel-nav.prev');
+            const nextBtn = document.querySelector('.carousel-nav.next');
+            
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => {
+                    isManualControl = true;
+                    prevSlide();
+                });
+            }
+            
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    isManualControl = true;
+                    nextSlide();
+                });
+            }
+        });
+
+        // Pause auto-slide on hover
         if (techCarousel) {
-            setInterval(nextSlide, 4000);
+            const carouselContainer = document.querySelector('.tech-carousel-container');
+            if (carouselContainer) {
+                carouselContainer.addEventListener('mouseenter', () => {
+                    clearInterval(autoSlideInterval);
+                });
+                
+                carouselContainer.addEventListener('mouseleave', () => {
+                    if (!isManualControl) {
+                        startAutoSlide();
+                    }
+                });
+            }
         }
 
         // Smooth scrolling
