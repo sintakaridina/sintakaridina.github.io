@@ -1,0 +1,2488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sinta Karidina - Backend Software Engineer Portfolio</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-blue: #0066cc;
+            --dark-blue: #004499;
+            --light-blue: #e6f2ff;
+            --dark-bg: #0a0e1a;
+            --card-bg: #1a1f2e;
+            --text-primary: #ffffff;
+            --text-secondary: #a0a6b8;
+            --border-color: #2d3748;
+            --success-green: #10b981;
+            --accent-purple: #8b5cf6;
+            --warning-orange: #f59e0b;
+            --error-red: #ef4444;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #1a202c 100%);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: rgba(10, 14, 26, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(45, 55, 72, 0.3);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        header.scrolled {
+            background: rgba(10, 14, 26, 0.98);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.2rem 0;
+            position: relative;
+        }
+
+        .logo {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .logo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.1), rgba(139, 92, 246, 0.1));
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
+        }
+
+        .logo:hover {
+            color: var(--primary-blue);
+            transform: translateY(-2px);
+        }
+
+        .logo:hover::before {
+            width: 100%;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 0;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.1), rgba(139, 92, 246, 0.1));
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: -1;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-blue);
+            transform: translateY(-2px);
+        }
+
+        .nav-links a:hover::before {
+            width: 100%;
+        }
+
+        .nav-links a.active {
+            color: var(--primary-blue);
+            background: rgba(0, 102, 204, 0.1);
+            border: 1px solid rgba(0, 102, 204, 0.2);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .mobile-menu-toggle:hover {
+            background: rgba(0, 102, 204, 0.1);
+        }
+
+        .mobile-menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--text-primary);
+            margin: 3px 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 2px;
+        }
+
+        .mobile-menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 5px);
+        }
+
+        .mobile-menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .mobile-menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -6px);
+        }
+
+        /* Mobile Navigation */
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: flex;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(10, 14, 26, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                padding: 2rem 0;
+                transform: translateY(-100vh);
+                transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                border-top: 1px solid var(--border-color);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+            }
+
+            .nav-links li {
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 1rem 2rem;
+                font-size: 1.1rem;
+                border-radius: 0;
+            }
+
+            .nav-links a:hover {
+                transform: none;
+                background: rgba(0, 102, 204, 0.1);
+            }
+        }
+
+        /* Hero About Wrapper */
+        .hero-about-wrapper {
+            background: radial-gradient(circle at center, rgba(0, 102, 204, 0.1) 0%, transparent 70%);
+        }
+
+        /* Global decorative circles */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080"><circle cx="200" cy="150" r="80" fill="%23ffffff" opacity="0.02"/><circle cx="1600" cy="400" r="120" fill="%23ffffff" opacity="0.025"/><circle cx="300" cy="700" r="25" fill="%23ffffff" opacity="0.015"/><circle cx="1400" cy="800" r="35" fill="%23ffffff" opacity="0.02"/><circle cx="800" cy="200" r="20" fill="%23ffffff" opacity="0.018"/><circle cx="1200" cy="900" r="30" fill="%23ffffff" opacity="0.022"/></svg>');
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 120px 0 80px;
+        }
+
+        .hero .container {
+            display: flex;
+            align-items: center;
+            gap: 4rem;
+            max-width: 1200px;
+        }
+
+        .hero-content {
+            flex: 1;
+            text-align: left;
+        }
+
+        .hero-image {
+            flex: 0 0 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-photo {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 4px solid var(--primary-blue);
+            box-shadow: 0 10px 30px rgba(0, 102, 204, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .profile-photo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(0, 102, 204, 0.4);
+        }
+
+        .profile-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 500px;
+            line-height: 1.6;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        /* Responsive Design for Hero */
+        @media (max-width: 768px) {
+            .hero .container {
+                flex-direction: column;
+                text-align: center;
+                gap: 2rem;
+            }
+
+            .hero-content {
+                text-align: center;
+            }
+
+            .hero-image {
+                flex: 0 0 auto;
+                order: -1;
+            }
+
+            .profile-photo {
+                width: 220px;
+                height: 220px;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                max-width: 100%;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+        }
+
+        .cta-button {
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cta-button.primary {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+        }
+
+        .cta-button.primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3);
+        }
+
+        .cta-button.secondary {
+            background: transparent;
+            color: var(--primary-blue);
+            border: 2px solid var(--primary-blue);
+        }
+
+        .cta-button.secondary:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 100px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 3rem;
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .about-text {
+            position: relative;
+        }
+
+        .about-text::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.2), rgba(139, 92, 246, 0.2));
+            border-radius: 50%;
+            opacity: 0.4;
+            z-index: -1;
+        }
+
+        .about-text p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .about-text p:first-child {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .section-title h2 {
+            color: var(--text-primary);
+        }
+
+        .section-title p {
+            color: var(--text-secondary);
+        }
+
+        .about-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem 1.5rem;
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-purple), var(--primary-blue));
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
+        }
+
+        .stat-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 102, 204, 0.15);
+            border-color: var(--primary-blue);
+        }
+
+        .stat-item:hover::before {
+            transform: translateX(0);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-blue), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .profile-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-blue), var(--accent-purple), var(--primary-blue));
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 25px 50px rgba(0, 102, 204, 0.2);
+            border-color: var(--primary-blue);
+        }
+
+        .profile-card:hover::before {
+            transform: translateX(0);
+        }
+
+        /* Responsive Design for About Section */
+        @media (max-width: 768px) {
+            .about-section {
+                padding: 80px 20px;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+
+            .about-stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .stat-item {
+                padding: 1.5rem 1rem;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+
+            .about-text::before {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .about-section {
+                padding: 60px 15px;
+            }
+        }
+
+        .profile-avatar {
+            font-size: 4rem;
+            color: var(--primary-blue);
+            margin-bottom: 1rem;
+        }
+
+        .profile-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .profile-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .profile-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .profile-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 102, 204, 0.1);
+            border: 1px solid rgba(0, 102, 204, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .profile-link:hover {
+            background: var(--primary-blue);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Experience Section */
+        .experience-section {
+            padding: 80px 0;
+        }
+
+        .experience-timeline {
+            position: relative;
+            margin-top: 3rem;
+        }
+
+        .experience-timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--primary-blue);
+            transform: translateX(-50%);
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-date {
+            flex: 0 0 200px;
+            text-align: center;
+            font-weight: 600;
+            color: var(--primary-blue);
+            padding: 1rem;
+            position: relative;
+        }
+
+        .timeline-date::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--primary-blue);
+            border-radius: 50%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-date::after {
+            right: -6px;
+        }
+
+        .timeline-item:nth-child(even) .timeline-date::after {
+            left: -6px;
+        }
+
+        .timeline-content {
+            flex: 1;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 0 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            border-color: var(--primary-blue);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 102, 204, 0.1);
+        }
+
+        .timeline-content h3 {
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content h4 {
+            color: var(--primary-blue);
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-content p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .timeline-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        /* Tech Stack Section */
+        .tech-stack-section {
+            padding: 80px 0;
+            background: rgba(0, 102, 204, 0.02);
+        }
+
+        .tech-carousel-container {
+            margin-top: 3rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .tech-carousel {
+            display: flex;
+            gap: 2rem;
+            animation: scroll 20s linear infinite;
+        }
+
+        .tech-item {
+            flex: 0 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .tech-item:hover {
+            border-color: var(--primary-blue);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 102, 204, 0.15);
+        }
+
+        .tech-icon {
+            font-size: 3rem;
+        }
+
+        .tech-item span {
+            font-weight: 600;
+            color: var(--text-primary);
+            text-align: center;
+        }
+
+        @keyframes scroll {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .tech-carousel:hover {
+            animation-play-state: paused;
+        }
+
+        /* Projects Section */
+        .projects-section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .project-container {
+            margin-bottom: 4rem;
+            background: var(--card-bg);
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .project-container:hover {
+            border-color: var(--primary-blue);
+            box-shadow: 0 20px 40px rgba(0, 102, 204, 0.1);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem;
+            border-bottom: 1px solid var(--border-color);
+            background: linear-gradient(135deg, rgba(0, 102, 204, 0.05), rgba(139, 92, 246, 0.05));
+        }
+
+        .project-info {
+            flex: 1;
+        }
+
+        .project-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .project-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+        }
+
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tech-tag {
+            background: rgba(0, 102, 204, 0.1);
+            color: var(--primary-blue);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: 1px solid rgba(0, 102, 204, 0.2);
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .github-link {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .github-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3);
+        }
+
+        /* Architecture Diagram */
+        .architecture-container {
+            padding: 2rem;
+            min-height: 400px;
+            position: relative;
+            background: radial-gradient(circle at center, rgba(0, 102, 204, 0.02) 0%, transparent 70%);
+        }
+
+        .architecture-diagram {
+            width: 100%;
+            height: 350px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* Architecture Components */
+        .arch-component {
+            position: absolute;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            min-width: 100px;
+        }
+
+        .arch-component:hover {
+            border-color: var(--primary-blue);
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .arch-component .component-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .arch-component .component-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .arch-component .component-detail {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        /* Connection Lines */
+        .connection-line {
+            position: absolute;
+            background: var(--primary-blue);
+            height: 2px;
+            transform-origin: left center;
+            opacity: 0.6;
+        }
+
+        .data-flow {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: var(--success-green);
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            padding: 1rem 2rem;
+            border-top: 1px solid var(--border-color);
+            background: rgba(0, 102, 204, 0.02);
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .control-btn {
+            background: rgba(0, 102, 204, 0.1);
+            color: var(--primary-blue);
+            border: 1px solid rgba(0, 102, 204, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .control-btn:hover {
+            background: rgba(0, 102, 204, 0.2);
+        }
+
+        .control-btn.active {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        /* Status Indicators */
+        .status-indicator {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success-green);
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.warning { background: var(--warning-orange); }
+        .status-dot.error { background: var(--error-red); }
+
+        /* Metrics Panel */
+        .metrics-panel {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            background: rgba(26, 31, 46, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 0.75rem;
+            min-width: 150px;
+        }
+
+        .metric-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+            font-size: 0.8rem;
+        }
+
+        .metric-value {
+            color: var(--success-green);
+            font-weight: 600;
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes dataFlow {
+            0% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0.5); }
+        }
+
+        @keyframes connectionGlow {
+            0%, 100% { box-shadow: 0 0 5px rgba(0, 102, 204, 0.3); }
+            50% { box-shadow: 0 0 15px rgba(0, 102, 204, 0.7); }
+        }
+
+        /* Contact Section */
+        .contact-section {
+            padding: 80px 0;
+        }
+
+        .contact-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-top: 3rem;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            border-color: var(--primary-blue);
+            transform: translateY(-5px);
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 102, 204, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+            font-size: 1.2rem;
+        }
+
+        .contact-details h3 {
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .contact-details p {
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .contact-form {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            background: rgba(0, 102, 204, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary-blue), var(--dark-blue));
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--card-bg);
+            border-top: 1px solid var(--border-color);
+            padding: 2rem 0;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-text p {
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .footer-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 102, 204, 0.1);
+            border: 1px solid rgba(0, 102, 204, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-blue);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-link:hover {
+            background: var(--primary-blue);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .project-header { flex-direction: column; gap: 1rem; }
+            .architecture-diagram { height: 250px; }
+            .arch-component { min-width: 80px; padding: 0.5rem; }
+            .arch-component .component-name { font-size: 0.8rem; }
+            .about-content { grid-template-columns: 1fr; gap: 2rem; }
+            .about-stats { grid-template-columns: 1fr; }
+            .experience-timeline::before { left: 20px; }
+            .timeline-item { flex-direction: column !important; }
+            .timeline-date { flex: none; text-align: left; padding-left: 3rem; }
+            .timeline-date::after { left: 14px; }
+            .timeline-content { margin: 0; margin-left: 3rem; }
+            .contact-content { grid-template-columns: 1fr; gap: 2rem; }
+            .footer-content { flex-direction: column; gap: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <a href="#" class="logo">Home</a>
+            <div class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#experience">Experience</a></li>
+                <li><a href="#tech-stack">Tech Stack</a></li>
+                <li><a href="#projects">Architecture Playground</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="hero-about-wrapper">
+        <section class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1>Sinta Karidina</h1>
+                    <p>Backend Software Engineer passionate about building scalable, high-performance systems. Specialized in distributed architectures, microservices, and cloud-native solutions.</p>
+                    <div class="hero-buttons">
+                        <a href="#contact" class="cta-button primary">Get In Touch</a>
+                        <a href="#projects" class="cta-button secondary">View Projects</a>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="profile-photo">
+                        <img src="profile.png" alt="Sinta Karidina - Backend Software Engineer">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about-section" id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>About Me</h2>
+                <p>Passionate about creating robust backend solutions</p>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Hi! I'm Sinta Karidina, a dedicated Backend Software Engineer with a passion for building scalable, high-performance systems. I specialize in designing and implementing distributed architectures, microservices, and cloud-native solutions that can handle millions of requests.</p>
+                    
+                    <p>My expertise spans across various technologies including Go, Python, Java, and Node.js, with extensive experience in database design, API development, and system optimization. I'm particularly interested in event-driven architectures, message queues, and real-time data processing.</p>
+                    
+                    <p>When I'm not coding, I enjoy exploring new technologies, contributing to open-source projects, and sharing knowledge with the developer community through technical blogs and speaking at conferences.</p>
+                    
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">3+</div>
+                            <div class="stat-label">Years Experience</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">50+</div>
+                            <div class="stat-label">Projects Completed</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">15+</div>
+                            <div class="stat-label">Technologies Mastered</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <div class="profile-card">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <h3>Sinta Karidina</h3>
+                        <p>Backend Software Engineer</p>
+                        <div class="profile-links">
+                            <a href="mailto:sintakaridina@email.com" class="profile-link">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                            <a href="https://linkedin.com/in/sinta-karidina" class="profile-link">
+                                <i class="fab fa-linkedin"></i>
+                            </a>
+                            <a href="https://github.com/sintakaridina" class="profile-link">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    </div>
+
+    <!-- Experience Section -->
+    <section class="experience-section" id="experience">
+        <div class="container">
+            <div class="section-title">
+                <h2>Professional Experience</h2>
+                <p>Building scalable backend systems across various industries</p>
+            </div>
+            <div class="experience-timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">May 2023 - Present</div>
+                    <div class="timeline-content">
+                        <h3>Software and Data Engineer</h3>
+                        <h4>JATIS MOBILE (Remote)</h4>
+                        <p>Architected enterprise-scale web applications using PHP (CodeIgniter) with 99.9% uptime. Developed microservices with Golang APIs and message queues (Artemis). Built full-stack applications using Laravel and React.js with multi-stage workflows. Optimized database performance across MySQL, PostgreSQL, and SQL Server, reducing report generation time by 60% using Rust applications.</p>
+                        <div class="timeline-tech">
+                            <span class="tech-tag">PHP</span>
+                            <span class="tech-tag">Golang</span>
+                            <span class="tech-tag">Laravel</span>
+                            <span class="tech-tag">React.js</span>
+                            <span class="tech-tag">MySQL</span>
+                            <span class="tech-tag">PostgreSQL</span>
+                            <span class="tech-tag">Rust</span>
+                            <span class="tech-tag">Artemis</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Dec 2022 - Mar 2023</div>
+                    <div class="timeline-content">
+                        <h3>Web Developer</h3>
+                        <h4>CONECWORLD (Remote)</h4>
+                        <p>Developed Ayostore.id web application by migrating from WordPress/WooCommerce to Laravel framework. Converted Figma designs into responsive HTML, CSS, and JavaScript. Integrated frontend with backend APIs using Ajax and jQuery. Collaborated with UI/UX and QA teams using GitHub and Monday.com for project management.</p>
+                        <div class="timeline-tech">
+                            <span class="tech-tag">Laravel</span>
+                            <span class="tech-tag">HTML</span>
+                            <span class="tech-tag">CSS</span>
+                            <span class="tech-tag">JavaScript</span>
+                            <span class="tech-tag">jQuery</span>
+                            <span class="tech-tag">GitHub</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Aug 2022 - Nov 2022</div>
+                    <div class="timeline-content">
+                        <h3>Web Developer (Probation)</h3>
+                        <h4>AFINDO INFORMATIKA</h4>
+                        <p>Created and maintained 4 web and mobile applications within two months including PPOB, information systems, e-catalog for UMKM branding, and observation chart app. Developed web applications using Laravel and MySQL with server deployment. Built mobile applications using Flutter framework with backend API integrations.</p>
+                        <div class="timeline-tech">
+                            <span class="tech-tag">Laravel</span>
+                            <span class="tech-tag">MySQL</span>
+                            <span class="tech-tag">Flutter</span>
+                            <span class="tech-tag">API Integration</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">Mar 2022 - Jul 2022</div>
+                    <div class="timeline-content">
+                        <h3>Backend Developer (Remote Internship)</h3>
+                        <h4>KAMAR PELAJAR</h4>
+                        <p>Developed new features for Kamar Pelajar website using full-stack Laravel and MySQL, focusing on employee data management and admin host verification. Researched and integrated third-party technologies including WhatsApp API for room order notifications. Collaborated using GitHub for version control and Trello for project management.</p>
+                        <div class="timeline-tech">
+                            <span class="tech-tag">Laravel</span>
+                            <span class="tech-tag">MySQL</span>
+                            <span class="tech-tag">WhatsApp API</span>
+                            <span class="tech-tag">GitHub</span>
+                            <span class="tech-tag">Trello</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tech Stack Section -->
+    <section class="tech-stack-section" id="tech-stack">
+        <div class="container">
+            <div class="section-title">
+                <h2>Tech Stack</h2>
+                <p>Technologies I work with to build amazing backend systems</p>
+            </div>
+            <div class="tech-carousel-container">
+                <div class="tech-carousel">
+                    <!-- Programming Languages -->
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fab fa-php" style="color: #777BB4;"></i>
+                        </div>
+                        <span>PHP</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fab fa-golang" style="color: #00ADD8;"></i>
+                        </div>
+                        <span>Golang</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fab fa-js-square" style="color: #F7DF1E;"></i>
+                        </div>
+                        <span>JavaScript</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fab fa-node-js" style="color: #339933;"></i>
+                        </div>
+                        <span>Node.js</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fab fa-rust" style="color: #CE422B;"></i>
+                        </div>
+                        <span>Rust</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fab fa-python" style="color: #3776AB;"></i>
+                        </div>
+                        <span>Python</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fab fa-java" style="color: #ED8B00;"></i>
+                        </div>
+                        <span>Java</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fab fa-html5" style="color: #E34F26;"></i>
+                        </div>
+                        <span>HTML</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fab fa-css3-alt" style="color: #1572B6;"></i>
+                        </div>
+                        <span>CSS</span>
+                    </div>
+                    <!-- Backend Frameworks -->
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fab fa-laravel" style="color: #FF2D20;"></i>
+                        </div>
+                        <span>Laravel</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fas fa-fire" style="color: #EE4323;"></i>
+                        </div>
+                        <span>CodeIgniter</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fas fa-server" style="color: #68217A;"></i>
+                        </div>
+                        <span>Express.js</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fas fa-exchange-alt" style="color: #0066CC;"></i>
+                        </div>
+                        <span>RESTful APIs</span>
+                    </div>
+                    <!-- Database & Storage -->
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fas fa-database" style="color: #00758F;"></i>
+                        </div>
+                        <span>MySQL</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fas fa-database" style="color: #336791;"></i>
+                        </div>
+                        <span>PostgreSQL</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fas fa-database" style="color: #CC2927;"></i>
+                        </div>
+                        <span>SQL Server</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fas fa-leaf" style="color: #4DB33D;"></i>
+                        </div>
+                        <span>MongoDB</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fas fa-memory" style="color: #DC382D;"></i>
+                        </div>
+                        <span>Redis</span>
+                    </div>
+                    <!-- System Architecture & Infrastructure -->
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fas fa-cubes" style="color: #0066CC;"></i>
+                        </div>
+                        <span>Microservices</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fas fa-stream" style="color: #D22128;"></i>
+                        </div>
+                        <span>Apache Artemis</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fab fa-docker" style="color: #2496ED;"></i>
+                        </div>
+                        <span>Docker</span>
+                    </div>
+                    <!-- Development Tools -->
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fab fa-git-alt" style="color: #F05032;"></i>
+                        </div>
+                        <span>Git</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fab fa-github" style="color: #181717;"></i>
+                        </div>
+                        <span>GitHub</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fab fa-gitlab" style="color: #FCA326;"></i>
+                        </div>
+                        <span>GitLab</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fas fa-rocket" style="color: #FF6C37;"></i>
+                        </div>
+                        <span>Postman</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fas fa-code" style="color: #007ACC;"></i>
+                        </div>
+                        <span>Visual Studio</span>
+                    </div>
+                    <div class="tech-item">
+                        <div class="tech-icon">
+                            <i class="fab fa-figma" style="color: #F24E1E;"></i>
+                        </div>
+                        <span>Figma</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="projects-section" id="projects">
+        <div class="container">
+            <div class="section-title">
+                <h2>System Architecture Playground</h2>
+                <p>Interactive diagrams showing real implementation patterns and data flows</p>
+            </div>
+
+            <!-- Project 1: API Rate Limiter -->
+            <div class="project-container">
+                <div class="project-header">
+                    <div class="project-info">
+                        <h3 class="project-title">API Rate Limiter System</h3>
+                        <p class="project-description">Distributed rate limiting with sliding window algorithm, Redis caching, and PostgreSQL persistence</p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">Go</span>
+                            <span class="tech-tag">PostgreSQL</span>
+                            <span class="tech-tag">Redis</span>
+                            <span class="tech-tag">Docker</span>
+                        </div>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/sintakaridina/backend-mastery-journey" target="_blank" class="github-link">
+                            <i class="fab fa-github"></i> View Code
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="architecture-container">
+                    <div class="status-indicator">
+                        <div class="status-dot"></div>
+                        <div class="status-dot"></div>
+                        <div class="status-dot warning"></div>
+                    </div>
+                    
+                    <div class="architecture-diagram" id="rateLimiter">
+                        <!-- Client -->
+                        <div class="arch-component" style="left: 5%; top: 50%; transform: translateY(-50%);">
+                            <div class="component-icon" style="color: var(--accent-purple);">
+                                <i class="fas fa-laptop"></i>
+                            </div>
+                            <div class="component-name">Client</div>
+                            <div class="component-detail">API Requests</div>
+                        </div>
+                        
+                        <!-- Rate Limiter -->
+                        <div class="arch-component" style="left: 30%; top: 50%; transform: translateY(-50%);">
+                            <div class="component-icon" style="color: var(--primary-blue);">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="component-name">Rate Limiter</div>
+                            <div class="component-detail">Sliding Window</div>
+                        </div>
+                        
+                        <!-- Redis Cache -->
+                        <div class="arch-component" style="left: 55%; top: 25%; transform: translateY(-50%);">
+                            <div class="component-icon" style="color: var(--error-red);">
+                                <i class="fas fa-memory"></i>
+                            </div>
+                            <div class="component-name">Redis</div>
+                            <div class="component-detail">Fast Lookup</div>
+                        </div>
+                        
+                        <!-- PostgreSQL -->
+                        <div class="arch-component" style="left: 55%; top: 75%; transform: translateY(-50%);">
+                            <div class="component-icon" style="color: var(--success-green);">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <div class="component-name">PostgreSQL</div>
+                            <div class="component-detail">Persistence</div>
+                        </div>
+                        
+                        <!-- API Server -->
+                        <div class="arch-component" style="left: 80%; top: 50%; transform: translateY(-50%);">
+                            <div class="component-icon" style="color: var(--warning-orange);">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="component-name">API Server</div>
+                            <div class="component-detail">Protected</div>
+                        </div>
+                    </div>
+                    
+                    <div class="metrics-panel">
+                        <div class="metric-item">
+                            <span>Requests/sec:</span>
+                            <span class="metric-value" id="rpsCount">127</span>
+                        </div>
+                        <div class="metric-item">
+                            <span>Cache Hit:</span>
+                            <span class="metric-value" id="cacheHit">94%</span>
+                        </div>
+                        <div class="metric-item">
+                            <span>Blocked:</span>
+                            <span class="metric-value" id="blockedCount">23</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-panel">
+                    <button class="control-btn active" onclick="startAnimation('rateLimiter')">Start Flow</button>
+                    <button class="control-btn" onclick="simulateTraffic('rateLimiter')">High Traffic</button>
+                    <button class="control-btn" onclick="showMetrics('rateLimiter')">Show Metrics</button>
+                </div>
+            </div>
+
+            <!-- Project 2: Load Balancer -->
+            <div class="project-container">
+                <div class="project-header">
+                    <div class="project-info">
+                        <h3 class="project-title">Intelligent Load Balancer</h3>
+                        <p class="project-description">Multi-algorithm load balancing with health checks, failover, and real-time monitoring</p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">Go</span>
+                            <span class="tech-tag">Nginx</span>
+                            <span class="tech-tag">Prometheus</span>
+                            <span class="tech-tag">Health Check</span>
+                        </div>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="github-link">
+                            <i class="fab fa-github"></i> Coming Soon
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="architecture-container">
+                    <div class="status-indicator">
+                        <div class="status-dot"></div>
+                        <div class="status-dot"></div>
+                        <div class="status-dot"></div>
+                    </div>
+                    
+                    <div class="architecture-diagram" id="loadBalancer">
+                        <!-- Client -->
+                        <div class="arch-component" style="left: 5%; top: 50%; transform: translateY(-50%);">
+                            <div class="component-icon" style="color: var(--accent-purple);">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="component-name">Clients</div>
+                            <div class="component-detail">Multiple Users</div>
+                        </div>
+                        
+                        <!-- Load Balancer -->
+                        <div class="arch-component" style="left: 35%; top: 50%; transform: translateY(-50%);">
+                            <div class="component-icon" style="color: var(--primary-blue);">
+                                <i class="fas fa-balance-scale"></i>
+                            </div>
+                            <div class="component-name">Load Balancer</div>
+                            <div class="component-detail">Round Robin</div>
+                        </div>
+                        
+                        <!-- Server 1 -->
+                        <div class="arch-component" style="left: 70%; top: 20%; transform: translateY(-50%);">
+                            <div class="component-icon" style="color: var(--success-green);">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="component-name">Server 1</div>
+                            <div class="component-detail">Healthy</div>
+                        </div>
+                        
+                        <!-- Server 2 -->
+                        <div class="arch-component" style="left: 70%; top: 50%; transform: translateY(-50%);">
+                            <div class="component-icon" style="color: var(--success-green);">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="component-name">Server 2</div>
+                            <div class="component-detail">Healthy</div>
+                        </div>
+                        
+                        <!-- Server 3 -->
+                        <div class="arch-component" style="left: 70%; top: 80%; transform: translateY(-50%);">
+                            <div class="component-icon" style="color: var(--error-red);">
+                                <i class="fas fa-server"></i>
+                            </div>
+                            <div class="component-name">Server 3</div>
+                            <div class="component-detail">Unhealthy</div>
+                        </div>
+                    </div>
+                    
+                    <div class="metrics-panel">
+                        <div class="metric-item">
+                            <span>Active Servers:</span>
+                            <span class="metric-value">2/3</span>
+                        </div>
+                        <div class="metric-item">
+                            <span>Algorithm:</span>
+                            <span class="metric-value">Round Robin</span>
+                        </div>
+                        <div class="metric-item">
+                            <span>Avg Response:</span>
+                            <span class="metric-value">45ms</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-panel">
+                    <button class="control-btn active" onclick="startAnimation('loadBalancer')">Start Flow</button>
+                    <button class="control-btn" onclick="changeAlgorithm('loadBalancer')">Change Algorithm</button>
+                    <button class="control-btn" onclick="simulateFailure('loadBalancer')">Simulate Failure</button>
+                </div>
+            </div>
+
+            <!-- Project 3: Message Queue -->
+            <div class="project-container">
+                <div class="project-header">
+                    <div class="project-info">
+                        <h3 class="project-title">Event-Driven Message Queue</h3>
+                        <p class="project-description">Pub/Sub architecture with Apache Kafka, dead letter queues, and guaranteed delivery</p>
+                        <div class="tech-stack">
+                            <span class="tech-tag">Apache Kafka</span>
+                            <span class="tech-tag">RabbitMQ</span>
+                            <span class="tech-tag">Go</span>
+                            <span class="tech-tag">Event Sourcing</span>
+                        </div>
+                    </div>
+                    <div class="project-links">
+                        <a href="#" class="github-link">
+                            <i class="fab fa-github"></i> Coming Soon
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="architecture-container">
+                    <div class="architecture-diagram" id="messageQueue">
+                        <!-- Publisher -->
+                        <div class="arch-component" style="left: 5%; top: 30%; transform: translateY(-50%);">
+                            <div class="component-icon" style="color: var(--accent-purple);">
+                                <i class="fas fa-paper-plane"></i>
+                            </div>
+                            <div class="component-name">Publisher</div>
+                            <div class="component-detail">Send Events</div>
+                        </div>
+                        
+                        <!-- Kafka Cluster -->
+                        <div class="arch-component" style="left: 40%; top: 50%; transform: translateY(-50%);">
+                            <div class="component-icon" style="color: var(--primary-blue);">
+                                <i class="fas fa-stream"></i>
+                            </div>
+                            <div class="component-name">Kafka</div>
+                            <div class="component-detail">Message Broker</div>
+                        </div>
+                        
+                        <!-- Consumer 1 -->
+                        <div class="arch-component" style="left: 75%; top: 20%; transform: translateY(-50%);">
+                            <div class="component-icon" style="color: var(--success-green);">
+                                <i class="fas fa-cogs"></i>
+                            </div>
+                            <div class="component-name">Consumer 1</div>
+                            <div class="component-detail">Email Service</div>
+                        </div>
+                        
+                        <!-- Consumer 2 -->
+                        <div class="arch-component" style="left: 75%; top: 50%; transform: translateY(-50%);">
+                            <div class="component-icon" style="color: var(--success-green);">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="component-name">Consumer 2</div>
+                            <div class="component-detail">Analytics</div>
+                        </div>
+                        
+                        <!-- Dead Letter Queue -->
+                        <div class="arch-component" style="left: 75%; top: 80%; transform: translateY(-50%);">
+                            <div class="component-icon" style="color: var(--error-red);">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="component-name">DLQ</div>
+                            <div class="component-detail">Failed Messages</div>
+                        </div>
+                    </div>
+                    
+                    <div class="metrics-panel">
+                        <div class="metric-item">
+                            <span>Messages/sec:</span>
+                            <span class="metric-value">1.2K</span>
+                        </div>
+                        <div class="metric-item">
+                            <span>Queue Depth:</span>
+                            <span class="metric-value">47</span>
+                        </div>
+                        <div class="metric-item">
+                            <span>Success Rate:</span>
+                            <span class="metric-value">99.8%</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="control-panel">
+                    <button class="control-btn active" onclick="startAnimation('messageQueue')">Start Flow</button>
+                    <button class="control-btn" onclick="showTopics('messageQueue')">Show Topics</button>
+                    <button class="control-btn" onclick="simulateFailure('messageQueue')">Simulate Error</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Get In Touch</h2>
+                <p>Let's discuss how we can work together on your next project</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Email</h3>
+                            <p>sintakaridina@email.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fab fa-linkedin"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>LinkedIn</h3>
+                            <p>linkedin.com/in/sinta-karidina</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fab fa-github"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>GitHub</h3>
+                            <p>github.com/sintakaridina</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Location</h3>
+                            <p>Jakarta, Indonesia</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">
+                            <i class="fas fa-paper-plane"></i>
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-text">
+                    <p>&copy; 2024 Sinta Karidina. All rights reserved.</p>
+                </div>
+                <div class="footer-links">
+                    <a href="mailto:sintakaridina@email.com" class="footer-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                    <a href="https://linkedin.com/in/sinta-karidina" class="footer-link">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="https://github.com/sintakaridina" class="footer-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Animation state management
+        let animations = {};
+        
+        function startAnimation(diagramId) {
+            if (animations[diagramId]) {
+                clearInterval(animations[diagramId]);
+            }
+            
+            const diagram = document.getElementById(diagramId);
+            const components = diagram.querySelectorAll('.arch-component');
+            
+            // Clear existing data flows
+            diagram.querySelectorAll('.data-flow').forEach(flow => flow.remove());
+            diagram.querySelectorAll('.connection-line').forEach(line => line.remove());
+            
+            // Create connection lines based on diagram type
+            createConnections(diagramId);
+            
+            // Start data flow animation
+            animations[diagramId] = setInterval(() => {
+                animateDataFlow(diagramId);
+                updateMetrics(diagramId);
+            }, 1500);
+            
+            // Update button states
+            const controlPanel = diagram.parentElement.querySelector('.control-panel');
+            if (controlPanel) {
+                const buttons = controlPanel.querySelectorAll('.control-btn');
+                buttons.forEach(btn => btn.classList.remove('active'));
+                // Find the start button and make it active
+                const startBtn = Array.from(buttons).find(btn => btn.textContent.includes('Start'));
+                if (startBtn) startBtn.classList.add('active');
+            }
+        }
+        
+        function createConnections(diagramId) {
+            const diagram = document.getElementById(diagramId);
+            const components = Array.from(diagram.querySelectorAll('.arch-component'));
+            
+            if (diagramId === 'rateLimiter') {
+                // Client -> Rate Limiter
+                createConnectionLine(components[0], components[1], diagram);
+                // Rate Limiter -> Redis
+                createConnectionLine(components[1], components[2], diagram);
+                // Rate Limiter -> PostgreSQL
+                createConnectionLine(components[1], components[3], diagram);
+                // Rate Limiter -> API Server
+                createConnectionLine(components[1], components[4], diagram);
+            } else if (diagramId === 'loadBalancer') {
+                // Client -> Load Balancer
+                createConnectionLine(components[0], components[1], diagram);
+                // Load Balancer -> Servers
+                for (let i = 2; i <= 4; i++) {
+                    createConnectionLine(components[1], components[i], diagram);
+                }
+            } else if (diagramId === 'messageQueue') {
+                // Publisher -> Kafka
+                createConnectionLine(components[0], components[1], diagram);
+                // Kafka -> Consumers
+                for (let i = 2; i < components.length; i++) {
+                    createConnectionLine(components[1], components[i], diagram);
+                }
+            }
+        }
+        
+        function createConnectionLine(from, to, container) {
+            const fromRect = from.getBoundingClientRect();
+            const toRect = to.getBoundingClientRect();
+            const containerRect = container.getBoundingClientRect();
+            
+            const line = document.createElement('div');
+            line.className = 'connection-line';
+            
+            const fromCenter = {
+                x: fromRect.left + fromRect.width / 2 - containerRect.left,
+                y: fromRect.top + fromRect.height / 2 - containerRect.top
+            };
+            
+            const toCenter = {
+                x: toRect.left + toRect.width / 2 - containerRect.left,
+                y: toRect.top + toRect.height / 2 - containerRect.top
+            };
+            
+            const distance = Math.sqrt(
+                Math.pow(toCenter.x - fromCenter.x, 2) + 
+                Math.pow(toCenter.y - fromCenter.y, 2)
+            );
+            
+            const angle = Math.atan2(toCenter.y - fromCenter.y, toCenter.x - fromCenter.x);
+            
+            line.style.left = fromCenter.x + 'px';
+            line.style.top = fromCenter.y + 'px';
+            line.style.width = distance + 'px';
+            line.style.transform = `rotate(${angle}rad)`;
+            
+            container.appendChild(line);
+        }
+        
+        function animateDataFlow(diagramId) {
+            const diagram = document.getElementById(diagramId);
+            const lines = diagram.querySelectorAll('.connection-line');
+            
+            lines.forEach((line, index) => {
+                setTimeout(() => {
+                    const dataFlow = document.createElement('div');
+                    dataFlow.className = 'data-flow';
+                    dataFlow.style.left = line.style.left;
+                    dataFlow.style.top = line.style.top;
+                    dataFlow.style.animation = 'dataFlow 1s ease-out';
+                    
+                    // Move along the line
+                    const lineWidth = parseFloat(line.style.width);
+                    const angle = parseFloat(line.style.transform.match(/rotate\((.*?)rad\)/)[1]);
+                    
+                    dataFlow.style.transform = `rotate(${angle}rad)`;
+                    
+                    diagram.appendChild(dataFlow);
+                    
+                    // Animate movement along the line
+                    let progress = 0;
+                    const moveInterval = setInterval(() => {
+                        progress += 0.05;
+                        if (progress >= 1) {
+                            clearInterval(moveInterval);
+                            dataFlow.remove();
+                        } else {
+                            const x = parseFloat(line.style.left) + (lineWidth * progress * Math.cos(angle));
+                            const y = parseFloat(line.style.top) + (lineWidth * progress * Math.sin(angle));
+                            dataFlow.style.left = x + 'px';
+                            dataFlow.style.top = y + 'px';
+                            dataFlow.style.opacity = Math.sin(progress * Math.PI);
+                        }
+                    }, 20);
+                }, index * 200);
+            });
+        }
+        
+        function updateMetrics(diagramId) {
+            if (diagramId === 'rateLimiter') {
+                document.getElementById('rpsCount').textContent = Math.floor(Math.random() * 50) + 100;
+                document.getElementById('cacheHit').textContent = (90 + Math.random() * 9).toFixed(1) + '%';
+                document.getElementById('blockedCount').textContent = Math.floor(Math.random() * 30) + 10;
+            }
+        }
+        
+        function simulateTraffic(diagramId) {
+            const diagram = document.getElementById(diagramId);
+            const components = diagram.querySelectorAll('.arch-component');
+            
+            // Add visual stress indicators
+            components.forEach(component => {
+                component.style.borderColor = 'var(--warning-orange)';
+                component.style.animation = 'connectionGlow 0.5s infinite';
+            });
+            
+            // Simulate high traffic metrics
+            if (diagramId === 'rateLimiter') {
+                document.getElementById('rpsCount').textContent = Math.floor(Math.random() * 200) + 300;
+                document.getElementById('cacheHit').textContent = (70 + Math.random() * 15).toFixed(1) + '%';
+                document.getElementById('blockedCount').textContent = Math.floor(Math.random() * 100) + 50;
+            }
+            
+            // Reset after 3 seconds
+            setTimeout(() => {
+                components.forEach(component => {
+                    component.style.borderColor = 'var(--border-color)';
+                    component.style.animation = '';
+                });
+            }, 3000);
+            
+            // Update button states
+            const controlPanel = diagram.parentElement.querySelector('.control-panel');
+            if (controlPanel) {
+                const buttons = controlPanel.querySelectorAll('.control-btn');
+                buttons.forEach(btn => btn.classList.remove('active'));
+                const trafficBtn = Array.from(buttons).find(btn => btn.textContent.includes('Traffic'));
+                if (trafficBtn) trafficBtn.classList.add('active');
+            }
+        }
+        
+        function showMetrics(diagramId) {
+            const metricsPanel = document.querySelector(`#${diagramId}`).parentElement.querySelector('.metrics-panel');
+            if (metricsPanel) {
+                metricsPanel.style.transform = 'scale(1.1)';
+                metricsPanel.style.border = '2px solid var(--primary-blue)';
+                metricsPanel.style.boxShadow = '0 0 20px rgba(0, 102, 204, 0.3)';
+                
+                // Highlight metrics with updated values
+                const metricValues = metricsPanel.querySelectorAll('.metric-value');
+                metricValues.forEach(value => {
+                    value.style.color = 'var(--primary-blue)';
+                    value.style.fontWeight = 'bold';
+                });
+                
+                setTimeout(() => {
+                    metricsPanel.style.transform = 'scale(1)';
+                    metricsPanel.style.border = '1px solid var(--border-color)';
+                    metricsPanel.style.boxShadow = '';
+                    metricValues.forEach(value => {
+                        value.style.color = 'var(--success-green)';
+                        value.style.fontWeight = '600';
+                    });
+                }, 2000);
+            }
+            
+            // Update button states
+            const controlPanel = document.querySelector(`#${diagramId}`).parentElement.querySelector('.control-panel');
+            if (controlPanel) {
+                const buttons = controlPanel.querySelectorAll('.control-btn');
+                buttons.forEach(btn => btn.classList.remove('active'));
+                const metricsBtn = Array.from(buttons).find(btn => btn.textContent.includes('Metrics'));
+                if (metricsBtn) metricsBtn.classList.add('active');
+            }
+        }
+        
+        function changeAlgorithm(diagramId) {
+            const algorithms = ['Round Robin', 'Least Connections', 'Weighted', 'IP Hash'];
+            const metricsPanel = document.querySelector(`#${diagramId}`).parentElement.querySelector('.metrics-panel');
+            const metricItems = metricsPanel.querySelectorAll('.metric-item');
+            
+            // Find algorithm metric (usually second item)
+            let algorithmMetric = null;
+            metricItems.forEach(item => {
+                if (item.textContent.includes('Algorithm') || item.textContent.includes('Round Robin') || 
+                    item.textContent.includes('Least Connections') || item.textContent.includes('Weighted') || 
+                    item.textContent.includes('IP Hash')) {
+                    algorithmMetric = item.querySelector('.metric-value');
+                }
+            });
+            
+            if (algorithmMetric) {
+                const currentAlgo = algorithmMetric.textContent;
+                const currentIndex = algorithms.indexOf(currentAlgo);
+                const nextAlgo = algorithms[(currentIndex + 1) % algorithms.length];
+                
+                algorithmMetric.textContent = nextAlgo;
+                algorithmMetric.style.color = 'var(--warning-orange)';
+                
+                setTimeout(() => {
+                    algorithmMetric.style.color = 'var(--success-green)';
+                }, 1000);
+                
+                // Update load balancer component
+                const loadBalancer = document.querySelector(`#${diagramId} .arch-component:nth-child(2) .component-detail`);
+                if (loadBalancer) {
+                    loadBalancer.textContent = nextAlgo;
+                }
+            }
+            
+            // Update button states
+            const controlPanel = document.querySelector(`#${diagramId}`).parentElement.querySelector('.control-panel');
+            if (controlPanel) {
+                const buttons = controlPanel.querySelectorAll('.control-btn');
+                buttons.forEach(btn => btn.classList.remove('active'));
+                const algoBtn = Array.from(buttons).find(btn => btn.textContent.includes('Algorithm'));
+                if (algoBtn) algoBtn.classList.add('active');
+            }
+        }
+        
+        function simulateFailure(diagramId) {
+            const diagram = document.getElementById(diagramId);
+            
+            if (diagramId === 'loadBalancer') {
+                // Simulate server failure
+                const servers = diagram.querySelectorAll('.arch-component:nth-child(n+3)');
+                const randomServer = servers[Math.floor(Math.random() * servers.length)];
+                const icon = randomServer.querySelector('.component-icon');
+                const detail = randomServer.querySelector('.component-detail');
+                
+                icon.style.color = 'var(--error-red)';
+                detail.textContent = 'Failed';
+                randomServer.style.borderColor = 'var(--error-red)';
+                randomServer.style.animation = 'connectionGlow 0.5s infinite';
+                
+                // Update active servers count in metrics
+                const metricsPanel = diagram.parentElement.querySelector('.metrics-panel');
+                const metricItems = metricsPanel.querySelectorAll('.metric-item');
+                let activeServersMetric = null;
+                
+                metricItems.forEach(item => {
+                    if (item.textContent.includes('Active') || item.textContent.includes('/')) {
+                        activeServersMetric = item.querySelector('.metric-value');
+                    }
+                });
+                
+                if (activeServersMetric) {
+                    const current = parseInt(activeServersMetric.textContent.split('/')[0]);
+                    activeServersMetric.textContent = Math.max(1, current - 1) + '/3';
+                    activeServersMetric.style.color = 'var(--error-red)';
+                }
+                
+                // Restore after 5 seconds
+                setTimeout(() => {
+                    icon.style.color = 'var(--success-green)';
+                    detail.textContent = 'Healthy';
+                    randomServer.style.borderColor = 'var(--border-color)';
+                    randomServer.style.animation = '';
+                    if (activeServersMetric) {
+                        activeServersMetric.textContent = '3/3';
+                        activeServersMetric.style.color = 'var(--success-green)';
+                    }
+                }, 5000);
+            } else if (diagramId === 'messageQueue') {
+                // Simulate message processing failure
+                const dlq = diagram.querySelector('.arch-component:last-child');
+                dlq.style.borderColor = 'var(--error-red)';
+                dlq.style.animation = 'connectionGlow 0.5s infinite';
+                
+                // Update DLQ component text
+                const dlqDetail = dlq.querySelector('.component-detail');
+                const originalText = dlqDetail.textContent;
+                dlqDetail.textContent = 'Processing Failed Messages';
+                dlqDetail.style.color = 'var(--error-red)';
+                
+                setTimeout(() => {
+                    dlq.style.borderColor = 'var(--border-color)';
+                    dlq.style.animation = '';
+                    dlqDetail.textContent = originalText;
+                    dlqDetail.style.color = 'var(--text-secondary)';
+                }, 3000);
+            }
+            
+            // Update button states
+            const controlPanel = diagram.parentElement.querySelector('.control-panel');
+            if (controlPanel) {
+                const buttons = controlPanel.querySelectorAll('.control-btn');
+                buttons.forEach(btn => btn.classList.remove('active'));
+                const failureBtn = Array.from(buttons).find(btn => btn.textContent.includes('Failure') || btn.textContent.includes('Error'));
+                if (failureBtn) failureBtn.classList.add('active');
+            }
+        }
+        
+        function showTopics(diagramId) {
+            const kafka = document.querySelector(`#${diagramId} .arch-component:nth-child(2)`);
+            const originalDetail = kafka.querySelector('.component-detail').textContent;
+            const topics = ['user.events', 'order.created', 'payment.processed', 'notification.sent'];
+            let topicIndex = 0;
+            
+            // Highlight Kafka component
+            kafka.style.borderColor = 'var(--primary-blue)';
+            kafka.style.boxShadow = '0 0 15px rgba(0, 102, 204, 0.3)';
+            
+            const topicInterval = setInterval(() => {
+                kafka.querySelector('.component-detail').textContent = topics[topicIndex];
+                kafka.querySelector('.component-detail').style.color = 'var(--primary-blue)';
+                kafka.querySelector('.component-detail').style.fontWeight = 'bold';
+                topicIndex = (topicIndex + 1) % topics.length;
+            }, 800);
+            
+            setTimeout(() => {
+                clearInterval(topicInterval);
+                kafka.querySelector('.component-detail').textContent = originalDetail;
+                kafka.querySelector('.component-detail').style.color = 'var(--text-secondary)';
+                kafka.querySelector('.component-detail').style.fontWeight = 'normal';
+                kafka.style.borderColor = 'var(--border-color)';
+                kafka.style.boxShadow = '';
+            }, 4000);
+            
+            // Update button states
+            const controlPanel = document.querySelector(`#${diagramId}`).parentElement.querySelector('.control-panel');
+            if (controlPanel) {
+                const buttons = controlPanel.querySelectorAll('.control-btn');
+                buttons.forEach(btn => btn.classList.remove('active'));
+                const topicsBtn = Array.from(buttons).find(btn => btn.textContent.includes('Topics'));
+                if (topicsBtn) topicsBtn.classList.add('active');
+            }
+        }
+        
+        // Tech Stack Carousel
+        let currentSlide = 0;
+        const techCarousel = document.querySelector('.tech-carousel');
+        const techItems = document.querySelectorAll('.tech-item');
+        const itemsPerSlide = 4;
+        const totalSlides = Math.ceil(techItems.length / itemsPerSlide);
+
+        function showSlide(slideIndex) {
+            if (techCarousel) {
+                const slideWidth = 100;
+                techCarousel.style.transform = `translateX(-${slideIndex * slideWidth}%)`;
+            }
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            showSlide(currentSlide);
+        }
+
+        // Auto-rotate carousel every 4 seconds
+        if (techCarousel) {
+            setInterval(nextSlide, 4000);
+        }
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Header background on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(10, 14, 26, 0.98)';
+            } else {
+                header.style.background = 'rgba(10, 14, 26, 0.95)';
+            }
+        });
+        
+        // Initialize first animation on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const firstStartBtn = document.querySelector('.control-btn');
+                if (firstStartBtn) {
+                    firstStartBtn.click();
+                }
+            }, 1000);
+        });
+        
+        // Component hover effects
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.arch-component').forEach(component => {
+                component.addEventListener('mouseenter', () => {
+                    const tooltip = document.createElement('div');
+                    tooltip.className = 'component-tooltip';
+                    tooltip.style.cssText = `
+                        position: absolute;
+                        background: rgba(26, 31, 46, 0.95);
+                        color: white;
+                        padding: 0.5rem;
+                        border-radius: 6px;
+                        font-size: 0.8rem;
+                        pointer-events: none;
+                        z-index: 1000;
+                        border: 1px solid var(--border-color);
+                        backdrop-filter: blur(10px);
+                        transform: translateY(-100%);
+                        margin-top: -10px;
+                    `;
+                    
+                    const componentName = component.querySelector('.component-name').textContent;
+                    const componentDetail = component.querySelector('.component-detail').textContent;
+                    
+                    let tooltipText = '';
+                    if (componentName === 'Rate Limiter') {
+                        tooltipText = 'Sliding window algorithm with Redis cache lookup and PostgreSQL persistence';
+                    } else if (componentName === 'Load Balancer') {
+                        tooltipText = 'Distributes incoming requests across healthy backend servers';
+                    } else if (componentName === 'Kafka') {
+                        tooltipText = 'Distributed streaming platform for real-time data feeds';
+                    } else {
+                        tooltipText = `${componentName}: ${componentDetail}`;
+                    }
+                    
+                    tooltip.textContent = tooltipText;
+                    component.appendChild(tooltip);
+                });
+                
+                component.addEventListener('mouseleave', () => {
+                    const tooltip = component.querySelector('.component-tooltip');
+                    if (tooltip) {
+                        tooltip.remove();
+                    }
+                });
+            });
+        });
+        
+        // Mobile Menu Toggle
+        const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+        
+        mobileMenuToggle.addEventListener('click', () => {
+            mobileMenuToggle.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+        
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenuToggle.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+        
+        // Header scroll effect
+        const header = document.querySelector('header');
+        let lastScrollY = window.scrollY;
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Active nav link highlighting
+        const sections = document.querySelectorAll('section[id]');
+        const navLinksArray = document.querySelectorAll('.nav-links a');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (window.scrollY >= (sectionTop - 200)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            
+            navLinksArray.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
